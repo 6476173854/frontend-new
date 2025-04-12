@@ -3,7 +3,7 @@
     <!-- Navigation bar -->
     <nav class="navbar">
       <div class="navbar-content">
-        <h1 class="navbar-title">Review hub</h1>
+        <h1 class="navbar-title">Movie Reviews</h1>
         <input
           type="text"
           v-model="searchQuery"
@@ -13,7 +13,7 @@
       </div>
     </nav>
 
-    <!-- Reviews Section -->
+    <!-- Reviews Container -->
     <div class="reviews-container">
       <div v-if="filteredReviews.length" class="reviews-list">
         <div
@@ -24,11 +24,11 @@
           <!-- Display Review Image -->
           <div v-if="review.image" class="review-image">
             <img
-            v-if="review.attributes.image"
-            :src="'http://localhost:1337/uploads/th_15b862ef60.jpg' + review.attributes.image.data.attributes.url"
-            alt="Review Image"
-            class="review-image"
-          />
+              v-if="review.attributes.image"
+              :src="'http://localhost:1337/uploads/th_15b862ef60.jpg' + review.attributes.image.data.attributes.url"
+              alt="Review Image"
+              class="review-image-img"
+            />
           </div>
 
           <!-- Review Title and Content -->
@@ -36,7 +36,6 @@
           <p class="review-rating">Rating: {{ review.rating }} / 5</p>
           <p class="review-category">Category: {{ review.category || 'Uncategorized' }}</p>
           <p class="review-date">Released: {{ new Date(review.date).toLocaleDateString() }}</p>
-          
         </div>
       </div>
 
@@ -49,7 +48,7 @@
     <!-- Footer -->
     <footer class="footer">
       <div class="footer-content">
-        <p>&copy; 2025 Ankush bansal. All Rights Reserved.</p>
+        <p>&copy; 2025 Ankush Bansal. All Rights Reserved.</p>
         <p>
           <a href="https://www.example.com/privacy" class="footer-link">Privacy Policy</a> |
           <a href="https://www.example.com/terms" class="footer-link">Terms of Service</a>
@@ -100,6 +99,7 @@ body {
   padding: 0;
   background-color: #f0f4f8; /* Light Background Color */
   color: #333;
+  line-height: 1.6; /* Increase line-height for better readability */
 }
 
 /* Navbar Styling */
@@ -108,6 +108,7 @@ body {
   background-color: #2c3e50; /* Dark Blue Background */
   color: white;
   padding: 20px 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for navbar */
 }
 
 .navbar-content {
@@ -126,46 +127,57 @@ body {
 }
 
 .search-bar {
-  padding: 10px;
-  width: 300px;
+  padding: 12px 15px;
+  width: 320px;
   font-size: 16px;
-  border-radius: 5px;
+  border-radius: 30px;
   border: none;
   background-color: #ecf0f1; /* Light Grey Background for Input */
+  transition: all 0.3s ease-in-out;
+}
+
+.search-bar:focus {
+  outline: none;
+  background-color: #dfe6e9; /* Slightly darker background on focus */
 }
 
 /* Reviews Section */
 .reviews-container {
-  width: 80%;
+  width: 90%;
   max-width: 1200px;
   margin-top: 30px;
   padding: 20px;
   background-color: #ffffff; /* White Background for the Reviews Section */
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .reviews-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
+  margin-top: 20px;
 }
 
 .review-card {
   background-color: #63e4f5;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .review-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .review-title {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
   color: #34495e; /* Dark Blue for Titles */
   margin-bottom: 10px;
@@ -176,18 +188,7 @@ body {
 .review-date {
   font-size: 14px;
   color: #7f8c8d; /* Grey Color for Subtext */
-}
-
-.view-more-link {
-  display: inline-block;
-  margin-top: 10px;
-  font-size: 16px;
-  text-decoration: none;
-  color: #2980b9; /* Blue for "View More" Links */
-}
-
-.view-more-link:hover {
-  text-decoration: underline;
+  margin: 5px 0;
 }
 
 .no-reviews {
@@ -202,8 +203,9 @@ body {
   color: white;
   padding: 20px;
   text-align: center;
-  margin-top: 30px;
+  margin-top: 40px;
   position: relative;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .footer-content {
@@ -214,6 +216,7 @@ body {
 .footer-link {
   color: #2980b9; /* Blue Links in the Footer */
   text-decoration: none;
+  padding: 0 5px;
 }
 
 .footer-link:hover {
@@ -226,5 +229,27 @@ body {
   height: auto;
   border-radius: 10px;
   object-fit: cover;
+  max-height: 250px; /* Restrict image height */
+  margin-bottom: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar-title {
+    font-size: 24px;
+  }
+  
+  .search-bar {
+    width: 250px;
+  }
+  
+  .reviews-container {
+    width: 95%;
+    padding: 15px;
+  }
+  
+  .review-card {
+    padding: 15px;
+  }
 }
 </style>
